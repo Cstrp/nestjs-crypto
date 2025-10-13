@@ -234,7 +234,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- 📧 Email: [0x467@pm.me](mailto:0x467@pm.me)
+- 📧 Email: [cstrp@pm.me](mailto:cstrp@pm.me)
 - 🐛 Issues: [GitHub Issues](https://github.com/cstrp/nestjs-crypto/issues)
 - 💬 Discussions: [GitHub Discussions](https://github.com/cstrp/nestjs-crypto/discussions)
 
