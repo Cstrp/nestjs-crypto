@@ -13,7 +13,7 @@
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "0x467 <0x467@pm.me>",
+  "author": "cstrp <cstrp@pm.me>",
   "license": "MIT",
   "type": "commonjs",
   "directories": {
@@ -22,6 +22,7 @@
   },
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",
+    "lint": "eslint lib/**/*.ts",
     "precommit": "lint-staged",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
@@ -29,6 +30,7 @@
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
+    "benchmark": "ts-node lib/utils/benchmark.ts",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -45,16 +47,24 @@
     "eslint": "^9.37.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
+    "gh-pages": "^6.3.0",
     "husky": "9.1.7",
     "lint-staged": "15.5.2",
+    "pino": "^8.21.0",
+    "pino-pretty": "^10.3.1",
     "prettier": "3.6.2",
     "reflect-metadata": "^0.2.2",
+    "ts-node": "^10.9.2",
     "typedoc": "0.28.14",
     "typescript": "5.9.3",
     "typescript-eslint": "^8.46.0",
+<<<<<<< HEAD
     "vitepress": "^1.6.4",
     "pino": "^8.21.0",
     "pino-pretty": "^13.1.2"
+=======
+    "vitepress": "^1.6.4"
+>>>>>>> 28dbf4d (The provided commit message is quite long and doesn't follow the conventional commit message format. The conventional format is to use the imperative mood (i.e., "Add" instead of "Added") and be concise.)
   },
   "peerDependencies": {
     "@nestjs/common": "^10.0.0 || ^11.0.0",

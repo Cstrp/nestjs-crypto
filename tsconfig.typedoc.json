@@ -4,7 +4,7 @@
     "rootDir": "./"
   },
   "typedocOptions": {
-    "entryPoints": ["./index.ts", "./lib"],
+    "entryPoints": ["./lib/index.ts", "./lib"],
     "out": "docs-api"
   }
 }

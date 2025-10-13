@@ -1,9 +1,10 @@
 import { defineConfig } from 'vitepress';
 
 export default defineConfig({
-  title: 'NestJS Telegraf',
+  title: 'NestJS Crypto',
   description: 'NestJS Crypto documentation',
   srcDir: './docs',
+  outDir: './dist',
   themeConfig: {
     nav: [
       { text: 'Docs', link: '/' },
@@ -16,7 +17,6 @@ export default defineConfig({
         items: [
           { text: 'Installation', link: '/' },
           { text: 'Getting updates', link: '/getting-updates' },
-          { text: 'Telegraf methods', link: '/telegraf-methods' },
           { text: 'Async configuration', link: '/async-configuration' },
         ],
       },
@@ -24,14 +24,10 @@ export default defineConfig({
         text: 'Extras',
         items: [],
       },
-      {
-        text: 'Migrating',
-        items: [{ text: 'From v1 to v2', link: '/migrating/from-v1-to-v2' }],
-      },
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/0x467/nestjs-crypto' },
+      { icon: 'github', link: 'https://github.com/cstrp/nestjs-crypto' },
     ],
   },
 });
