@@ -37,15 +37,15 @@ jobs:
       - name: Build TypeDoc API documentation
         run: npm run typedoc:build
 
-      - name: Copy TypeDoc to dist
+      - name: Copy TypeDoc to VitePress output
         run: |
-          mkdir -p dist/api-docs
-          cp -r docs-api/* dist/api-docs/ || true
+          mkdir -p docs/.vitepress/dist/api-docs
+          cp -r docs-api/* docs/.vitepress/dist/api-docs/ || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: docs/.vitepress/dist
 
   deploy:
     environment:
