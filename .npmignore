@@ -7,6 +7,10 @@ lib/
 **/__tests__/
 **/*.spec.ts
 **/*.test.ts
+**/*.spec.js
+**/*.test.js
+**/*.spec.d.ts
+**/*.test.d.ts
 coverage/
 jest.config.js
 TESTING.md

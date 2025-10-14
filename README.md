@@ -1,7 +1,10 @@
 # NestJS Crypto
 
 [![npm version](https://badge.fury.io/js/nestjs-crypto.svg)](https://badge.fury.io/js/nestjs-crypto)
+[![CI](https://github.com/Cstrp/nestjs-crypto/actions/workflows/ci.yml/badge.svg)](https://github.com/Cstrp/nestjs-crypto/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm downloads](https://img.shields.io/npm/dm/nestjs-crypto.svg)](https://www.npmjs.com/package/nestjs-crypto)
+[![Documentation](https://img.shields.io/badge/docs-online-brightgreen.svg)](https://cstrp.github.io/nestjs-crypto/)
 
 A comprehensive crypto module for NestJS applications, providing both irreversible (bcrypt) and reversible (AES) encryption methods with automatic secret generation, performance benchmarks, and extensive documentation.
 
