@@ -6,8 +6,6 @@ export default defineConfig({
   description:
     'A comprehensive crypto module for NestJS applications with bcrypt and AES encryption',
   base: '/nestjs-crypto/',
-  srcDir: './docs',
-  outDir: './docs/.vitepress/dist',
   cleanUrls: true,
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
