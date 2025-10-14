@@ -5,6 +5,7 @@ export default defineConfig({
   titleTemplate: ':title - Enterprise-Grade Encryption',
   description:
     'A comprehensive crypto module for NestJS applications with bcrypt and AES encryption',
+  base: '/nestjs-crypto/',
   srcDir: './docs',
   outDir: './docs/.vitepress/dist',
   cleanUrls: true,
