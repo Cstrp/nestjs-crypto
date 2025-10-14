@@ -1,0 +1,223 @@
+/**
+ * Customize default theme styling by overriding CSS variables:
+ * https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
+ */
+
+/**
+ * Colors
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-c-brand-1: #e0234e;
+  --vp-c-brand-2: #c41e43;
+  --vp-c-brand-3: #a81939;
+  --vp-c-brand-soft: rgba(224, 35, 78, 0.14);
+
+  --vp-c-sponsor: #ea5455;
+
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    135deg,
+    #e0234e 10%,
+    #ea5455 100%
+  );
+
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    #e0234e 50%,
+    #ea5455 50%
+  );
+  --vp-home-hero-image-filter: blur(44px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vp-c-brand-1: #ea5455;
+    --vp-c-brand-2: #e0234e;
+    --vp-c-brand-3: #c41e43;
+    --vp-c-brand-soft: rgba(234, 84, 85, 0.16);
+  }
+}
+
+/**
+ * Component: Button
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: var(--vp-c-white);
+  --vp-button-brand-bg: var(--vp-c-brand-3);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: var(--vp-c-white);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-border: transparent;
+  --vp-button-brand-active-text: var(--vp-c-white);
+  --vp-button-brand-active-bg: var(--vp-c-brand-1);
+}
+
+/**
+ * Component: Custom Block
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-custom-block-tip-border: var(--vp-c-brand-1);
+  --vp-custom-block-tip-text: var(--vp-c-brand-1);
+  --vp-custom-block-tip-bg: var(--vp-c-brand-soft);
+  --vp-custom-block-tip-code-bg: var(--vp-c-brand-soft);
+}
+
+/**
+ * Component: Code
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-code-tab-divider: var(--vp-c-divider);
+  --vp-code-copy-code-border-color: var(--vp-c-divider);
+  --vp-code-copy-code-bg: var(--vp-c-bg-soft);
+  --vp-code-copy-code-hover-border-color: var(--vp-c-divider);
+  --vp-code-copy-code-hover-bg: var(--vp-c-bg);
+  --vp-code-copy-code-active-text: var(--vp-c-text-2);
+  --vp-code-copy-copied-text-content: 'Copied';
+  --vp-code-tab-active-bar-color: var(--vp-c-brand-1);
+}
+
+/**
+ * Component: Home
+ * -------------------------------------------------------------------------- */
+
+.VPHero .name {
+  font-size: 56px !important;
+}
+
+.VPHero .text {
+  font-size: 32px !important;
+}
+
+.VPHero .tagline {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.VPFeature {
+  transition: all 0.25s ease;
+}
+
+.VPFeature:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/**
+ * Component: Nav
+ * -------------------------------------------------------------------------- */
+
+.VPNavBar .title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.VPNavBarTitle .title {
+  border-bottom: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Fix social links visibility */
+.VPSocialLinks {
+  display: flex !important;
+  gap: 8px;
+}
+
+.VPSocialLink {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--vp-c-text-2);
+  transition: color 0.25s;
+}
+
+.VPSocialLink:hover {
+  color: var(--vp-c-brand-1);
+}
+
+/**
+ * Component: Custom
+ * -------------------------------------------------------------------------- */
+
+.vp-doc h1,
+.vp-doc h2 {
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 24px;
+  margin-top: 48px;
+}
+
+.vp-doc h1:first-child,
+.vp-doc h2:first-child {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Badge styles */
+.vp-doc [class*='language-'] .badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vp-c-white);
+  background-color: var(--vp-c-brand-1);
+  border-radius: 4px;
+}
+
+/* Improved code blocks */
+.vp-doc div[class*='language-'] {
+  position: relative;
+  margin: 16px 0;
+  border-radius: 8px;
+}
+
+.vp-doc div[class*='language-']:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Cards for feature sections */
+.feature-card {
+  padding: 20px;
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  margin: 12px 0;
+  transition: all 0.25s ease;
+}
+
+.feature-card:hover {
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 4px 12px rgba(224, 35, 78, 0.1);
+}
+
+/* Alert boxes */
+.alert {
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+  border-left: 4px solid;
+}
+
+.alert.info {
+  background: var(--vp-c-bg-soft);
+  border-color: var(--vp-c-brand-1);
+}
+
+.alert.warning {
+  background: rgba(255, 193, 7, 0.1);
+  border-color: #ffc107;
+}
+
+.alert.danger {
+  background: rgba(220, 53, 69, 0.1);
+  border-color: #dc3545;
+}

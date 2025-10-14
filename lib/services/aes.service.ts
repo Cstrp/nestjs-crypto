@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 import { logger } from '../utils';
+import {
+  validateNonEmptyString,
+  validateAndConvertToBuffer,
+  validateEncryptedData,
+} from '../utils/validation';
+import { EncryptionError, DecryptionError, InvalidKeyError } from '../errors';
 import { Logger } from 'pino';
 
 @Injectable()
@@ -12,80 +18,141 @@ export class AesService {
 
   /**
    * Generates a random AES key
+   * @returns A Buffer containing a cryptographically secure random key
    */
   public generateKey(): Buffer {
-    return randomBytes(this.keyLength);
+    try {
+      return randomBytes(this.keyLength);
+    } catch (error) {
+      this.logger.error({ error }, 'Failed to generate AES key');
+      throw new EncryptionError('Failed to generate AES key', error as Error);
+    }
   }
 
   /**
    * Generates a random initialization vector
+   * @returns A Buffer containing a cryptographically secure random IV
    */
   public generateIv(): Buffer {
-    return randomBytes(this.ivLength);
+    try {
+      return randomBytes(this.ivLength);
+    } catch (error) {
+      this.logger.error({ error }, 'Failed to generate IV');
+      throw new EncryptionError(
+        'Failed to generate initialization vector',
+        error as Error,
+      );
+    }
   }
 
   /**
-   * Encrypts data using AES
-   * @param data - The data to encrypt
-   * @param key - The encryption key (will generate if not provided)
-   * @param iv - The initialization vector (will generate if not provided)
-   * @returns Object containing encrypted data, key, and iv
+   * Encrypts data using AES-256-CBC
+   * @param data - The data to encrypt (must be non-empty string)
+   * @param key - The encryption key (32 bytes / 64 hex chars, will generate if not provided)
+   * @param iv - The initialization vector (16 bytes / 32 hex chars, will generate if not provided)
+   * @returns Object containing encrypted data, key, and iv as hex strings
+   * @throws {ValidationError} If data is invalid
+   * @throws {InvalidKeyError} If key or IV format is invalid
+   * @throws {EncryptionError} If encryption fails
    */
   public encrypt(
     data: string,
     key?: Buffer | string,
     iv?: Buffer | string,
   ): { encrypted: string; key: string; iv: string } {
-    const encryptionKey = key
-      ? typeof key === 'string'
-        ? Buffer.from(key, 'hex')
-        : key
-      : this.generateKey();
-    const initializationVector = iv
-      ? typeof iv === 'string'
-        ? Buffer.from(iv, 'hex')
-        : iv
-      : this.generateIv();
+    try {
+      // Validate input data
+      validateNonEmptyString(data, 'data');
 
-    const cipher = createCipheriv(
-      this.algorithm,
-      encryptionKey,
-      initializationVector,
-    );
-    let encrypted = cipher.update(data, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
+      // Validate and convert key
+      const encryptionKey = key
+        ? validateAndConvertToBuffer(key, 'key', this.keyLength)!
+        : this.generateKey();
 
-    this.logger.debug('Data encrypted with AES');
+      // Validate and convert IV
+      const initializationVector = iv
+        ? validateAndConvertToBuffer(iv, 'IV', this.ivLength)!
+        : this.generateIv();
 
-    return {
-      encrypted,
-      key: encryptionKey.toString('hex'),
-      iv: initializationVector.toString('hex'),
-    };
+      // Perform encryption
+      const cipher = createCipheriv(
+        this.algorithm,
+        encryptionKey,
+        initializationVector,
+      );
+      let encrypted = cipher.update(data, 'utf8', 'hex');
+      encrypted += cipher.final('hex');
+
+      this.logger.debug({ dataLength: data.length }, 'Data encrypted with AES');
+
+      return {
+        encrypted,
+        key: encryptionKey.toString('hex'),
+        iv: initializationVector.toString('hex'),
+      };
+    } catch (error) {
+      if (
+        error instanceof InvalidKeyError ||
+        error instanceof EncryptionError
+      ) {
+        throw error;
+      }
+      this.logger.error({ error }, 'Encryption failed');
+      throw new EncryptionError('Failed to encrypt data', error as Error);
+    }
   }
 
   /**
-   * Decrypts data using AES
-   * @param encryptedData - The encrypted data
-   * @param key - The encryption key
-   * @param iv - The initialization vector
-   * @returns The decrypted data
+   * Decrypts data using AES-256-CBC
+   * @param encryptedData - The encrypted data as hex string
+   * @param key - The encryption key (32 bytes / 64 hex chars)
+   * @param iv - The initialization vector (16 bytes / 32 hex chars)
+   * @returns The decrypted data as string
+   * @throws {ValidationError} If inputs are invalid
+   * @throws {InvalidKeyError} If key or IV format is invalid
+   * @throws {DecryptionError} If decryption fails
    */
   public decrypt(encryptedData: string, key: string, iv: string): string {
-    const decryptionKey = Buffer.from(key, 'hex');
-    const initializationVector = Buffer.from(iv, 'hex');
+    try {
+      // Validate inputs
+      validateEncryptedData(encryptedData);
 
-    const decipher = createDecipheriv(
-      this.algorithm,
-      decryptionKey,
-      initializationVector,
-    );
-    let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
+      const decryptionKey = validateAndConvertToBuffer(
+        key,
+        'key',
+        this.keyLength,
+      )!;
+      const initializationVector = validateAndConvertToBuffer(
+        iv,
+        'IV',
+        this.ivLength,
+      )!;
 
-    this.logger.debug('Data decrypted with AES');
+      // Perform decryption
+      const decipher = createDecipheriv(
+        this.algorithm,
+        decryptionKey,
+        initializationVector,
+      );
+      let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
+      decrypted += decipher.final('utf8');
 
-    return decrypted;
+      this.logger.debug('Data decrypted with AES');
+
+      return decrypted;
+    } catch (error) {
+      if (
+        error instanceof InvalidKeyError ||
+        error instanceof DecryptionError
+      ) {
+        throw error;
+      }
+      this.logger.error({ error }, 'Decryption failed');
+      throw new DecryptionError(
+        'Failed to decrypt data. Ensure the key, IV, and encrypted data are correct.',
+        error as Error,
+      );
+    }
   }
 
   /**
